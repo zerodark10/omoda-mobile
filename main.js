@@ -5,18 +5,11 @@ import { setupCounter } from './counter.js'
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Ahora que el DOM está completamente cargado, selecciona el contenedor
   const modelContainer = document.querySelector('.modelo3d');
   
-  // Asegúrate de que el contenedor no sea null antes de intentar usar appendChild
   if (modelContainer) {
-    // Aquí puedes añadir el canvas o cualquier otro contenido al contenedor
-    // Por ejemplo, para añadir el canvas de Three.js
     const canvas = document.createElement('canvas');
     modelContainer.appendChild(canvas);
-
-    // Continúa con la configuración de Three.js y otros elementos
-    // ...
   } else {
     console.error('El contenedor .modelo3d no se encontró en el DOM.');
   }
@@ -25,21 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 
 let hemiLight;
-// Crear la escena
 const scene = new THREE.Scene()
 
-// Cargar y configurar el HDRI
-const rgbeLoader = new RGBELoader();
-rgbeLoader.load('hdri/2.hdr', function(texture) {
-  texture.mapping = THREE.EquirectangularReflectionMapping;
-  scene.background = texture;
-  scene.environment = texture;
-});
-
 // Añadir luces
+const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Luz ambiental
+scene.add(ambientLight);
+
 let light1 = new THREE.PointLight(0xe499e4, 2);
 light1.position.set(0, 1.5, 2.5);
 scene.add(light1);
@@ -56,44 +42,34 @@ let light4 = new THREE.PointLight(0xe499e4, 2);
 light4.position.set(-2.5, 1.5, 0);
 scene.add(light4);
 
-// Configurar la cámara
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 3.8;
 camera.position.y = 1.5;
 camera.position.x = 1.3;
 light1.castShadow = true;
-camera.lookAt(new THREE.Vector3(0, 0, 0)); // Asegúrate de que la cámara esté mirando al centro del modelo
+camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-// Configurar el renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
 renderer.toneMapping = THREE.ReinhardToneMapping;
 renderer.toneMappingExposure = 1.3;
 
-// Añadir el canvas al div con la clase modelo3d
 const modelContainer = document.querySelector('.modelo3d');
 modelContainer.appendChild(renderer.domElement);
 
-// Ajustar el tamaño del renderer al tamaño del contenedor
 renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
 
-// Configurar controles de la cámara
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-controls.minPolarAngle = Math.PI / 3; // Puedes ajustar estos valores según tus necesidades
-controls.maxPolarAngle = Math.PI / 2.5; // Puedes ajustar estos valores según tus necesidades
-//controls.minPolarAngle = Math.PI / 2; // Limita la rotación hacia arriba
-//controls.maxPolarAngle = Math.PI / 2; // Limita la rotación hacia abajo
+controls.minPolarAngle = Math.PI / 3;
+controls.maxPolarAngle = Math.PI / 2.5;
 controls.enablePan = false;
 controls.enableZoom = false;
 
-
-// Cargar el modelo GLTF
 const loader = new GLTFLoader();
 let carModel;
-let leftFrontDoor, rightFrontDoor, leftRearDoor, rightRearDoor,trunkDoor;
-
+let leftFrontDoor, rightFrontDoor, leftRearDoor, rightRearDoor, trunkDoor;
 
 hemiLight = new THREE.HemisphereLight(0xd7e2e5, 0x080820, 2);
 scene.add(hemiLight);
@@ -105,7 +81,6 @@ loader.load(
 
       carModel = gltf.scene;
       carModel.traverse(function (child) {
-          console.log(child.name);
           if (child.name === 'Puerta-izquierda') {
               leftFrontDoor = child;
           }
@@ -136,7 +111,6 @@ loader.load(
   }
 );
 
-// Funciones para abrir y cerrar puertas de forma independiente
 function openLeftFrontDoor() {
   if (leftFrontDoor) {
       leftFrontDoor.rotation.y = -Math.PI / 0.566; 
@@ -193,24 +167,19 @@ function closeRightRearDoor() {
   }
 }
 
-// Funciones para abrir y cerrar la puerta trasera de la cajuela
 function openTrunkDoor() {
   if (trunkDoor) {
-    trunkDoor.rotation.x = -Math.PI / 0.66; // Ajusta el valor según el ángulo que deseas
+    trunkDoor.rotation.x = -Math.PI / 0.66; 
     abrirDoor.play();
   }
 }
 
 function closeTrunkDoor() {
   if (trunkDoor) {
-    trunkDoor.rotation.x = 0; // Vuelve a la posición original
+    trunkDoor.rotation.x = 0; 
     cerrarDoor.play();
   }
 }
-
-
-
-
 
 const abrirDoor = new Audio('audio/abrir.mp3');
 const cerrarDoor = new Audio('audio/cerrar.mp3');
@@ -223,7 +192,6 @@ document.getElementById('openLeftRearDoorButton').addEventListener('click', open
 document.getElementById('closeLeftRearDoorButton').addEventListener('click', closeLeftRearDoor);
 document.getElementById('openRightRearDoorButton').addEventListener('click', openRightRearDoor);
 document.getElementById('closeRightRearDoorButton').addEventListener('click', closeRightRearDoor);
-// Asignar eventos a los botones correspondientes
 document.getElementById('openTrunkDoorButton').addEventListener('click', openTrunkDoor);
 document.getElementById('closeTrunkDoorButton').addEventListener('click', closeTrunkDoor);
 
@@ -245,19 +213,12 @@ const resetCameraButton = document.getElementById('resetCameraButton');
 resetCameraButton.addEventListener('click', resetCamera);
 
 function moveCamera() {
-  // Ajustar la posición de la cámara en el eje z
-  camera.position.set(0, 0, 0); // Puedes ajustar estos valores según lo necesites
-
+  camera.position.set(0, 0, 0);
   camera.position.x -= 0;
   camera.position.z -= 0.01;
   camera.position.y += 3.5;
-
-
-
-  // Actualiza los controles
   controls.update();
 }
-
 
 const moveCameraButton = document.getElementById('moveCameraButton');
 moveCameraButton.addEventListener('click', moveCamera);
@@ -278,7 +239,7 @@ function animate() {
 }
 
 function render() {
-  renderer.render(scene, camera, hemiLight);
+  renderer.render(scene, camera);
 }
 controls.update();
 
