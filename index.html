@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Render</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      /* Estilos generales para el contenedor del modelo y los botones */
+   
+
+      /* Estilos para el contenedor de botones */
+      .card-car {
+        position: absolute;
+        bottom: 10px;
+        width: 100% !important;
+       }
+
+      .card-car.show {
+        left: 10px; /* Posición visible de los botones */
+      }
+
+      /* Estilos para los botones y la imagen */
+      .butonflex {
+        display: block;
+        flex-direction: column; /* Alinea los botones verticalmente */
+        align-items: center;
+      }
+
+      .imagen-buton {
+        height: 30px;
+        width: auto;
+      }
+
+      /* Estilos para el botón de movimiento de cámara */
+      .moveCameraButton.hide {
+        display: none;
+      }
+
+      /* Medidas para pantallas pequeñas */
+      @media (max-width: 600px) {
+        .modelo3d {
+          width:  400px !important;
+        }
+
+      
+      }
+      @media (max-width: 600px) {
+       canvas {
+        position: absolute;
+        top: 0px;
+          height:  100vh !important;
+        }
+
+      
+      }
+    </style>
+  </head>
+  <body id="app" class="modelo3d">
+    <!-- Contenedor de botones -->
+    <div class="card-car  butonflex">
+    
+     
+        <button id="resetCameraButton">Salir del interior</button>
+     
+
+        <button id="openLeftFrontDoorButton"><img src="img/Puertadelanteraizquierda.png" class="imagen-buton" alt="Abrir Puerta Delantera Izquierda"></button>
+        <button id="closeLeftFrontDoorButton"><img src="img/cerrar.png" class="imagen-buton" alt="Cerrar Puerta Delantera Izquierda"></button>
+   
+        <button id="openRightFrontDoorButton"><img src="img/pd-derecha.png" class="imagen-buton" alt="Abrir Puerta Delantera Derecha"></button>
+        <button id="closeRightFrontDoorButton"><img src="img/cerrar.png" class="imagen-buton" alt="Cerrar Puerta Delantera Derecha"></button>
+     
+        <button id="openLeftRearDoorButton"><img src="img/puertatraseraizquierda.png" class="imagen-buton" alt="Abrir Puerta Trasera Izquierda"></button>
+        <button id="closeLeftRearDoorButton"><img src="img/cerrar.png" class="imagen-buton" alt="Cerrar Puerta Trasera Izquierda"></button>
+        <button id="moveCameraButton" class="moveCameraButton ">Ver interior</button>
+
+        <button id="openRightRearDoorButton"><img src="img/puertatraseraderecha.png" class="imagen-buton" alt="Abrir Puerta Trasera Derecha"></button>
+        <button id="closeRightRearDoorButton"><img src="img/cerrar.png" class="imagen-buton" alt="Cerrar Puerta Trasera Derecha"></button>
+        <button id="openTrunkDoorButton">Abrir Cajuela</button>
+        <button id="closeTrunkDoorButton">Cerrar Cajuela</button>
+      </div>
+    
+
+
+    
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
