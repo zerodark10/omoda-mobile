@@ -49,7 +49,7 @@ camera.position.x = 1.3;
 light1.castShadow = true;
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 renderer.shadowMap.enabled = true;
 renderer.toneMapping = THREE.ReinhardToneMapping;
 renderer.toneMappingExposure = 1.3;
